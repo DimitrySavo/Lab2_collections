@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Lab2_collections</string>
+    <string name="selected_item">Select Item</string>
+    <string-array name="datatypes">
+        <item>Массив</item>
+        <item>Список</item>
+        <item>Словарь</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
