@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import com.example.lab2_collections.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var adapterItems: ArrayAdapter<String>
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

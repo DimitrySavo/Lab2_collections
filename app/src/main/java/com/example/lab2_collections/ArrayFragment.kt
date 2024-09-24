@@ -1,10 +1,15 @@
 package com.example.lab2_collections
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lab2_collections.databinding.FragmentArrayBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +25,9 @@ class ArrayFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var binding: FragmentArrayBinding
+    private lateinit var adapter: ArrayAdapter
+    private var dataList = emptyArray<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +42,47 @@ class ArrayFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_array, container, false)
+        binding = FragmentArrayBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        binding.arraySize.minValue = 1
+        binding.arraySize.maxValue = 100
+        binding.arraySize.setOnValueChangedListener { picker, oldVal, newVal ->
+            updateArraySize(newVal)
+        }
+
+        binding.arrayRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        adapter = ArrayAdapter(dataList)
+        binding.arrayRecyclerView.adapter = adapter
+        setupSearch()
+
+        return binding.root
+    }
+
+
+
+    private fun setupSearch(){
+        binding.searchArray.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val filteredArray = if (!newText.isNullOrEmpty()){
+                    dataList.filter { it.contains(newText) }.toTypedArray()
+                } else {
+                    dataList
+                }
+                adapter.updateArray(filteredArray)
+                return true
+            }
+
+        })
+    }
+
+    private fun updateArraySize(size: Int) {
+        dataList = Array(size) { i-> "Item $i"}
+        adapter.updateArray(dataList)
     }
 
     companion object {
@@ -57,3 +105,5 @@ class ArrayFragment : Fragment() {
             }
     }
 }
+
+
